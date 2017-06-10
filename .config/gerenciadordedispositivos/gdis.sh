@@ -4,43 +4,45 @@ OPCAO=$(dialog					\
 	--stdout				\
 	--menu "Gerenciador de dispositivos"	\
 	0 0 0					\
-	1 "Data e hora do sistema"		\
-	2 "Calendário"				\
-	3 "Alterar data do sistema"		\
-	4 "Alterar hora do sistema"		\
-	5 "Informações da cpu"			\
-	6 "Informações de disco e partições"	\
-	7 "Visualizar modulos carregados"	\
-	8 "Informações do barramento PCI" 	\
-	9 "Utilização de memória RAM"		\
-	10 "Quantidade de INODES disponíveis"	\
-	11 "Versão do Kernel "			\
-	12 "Todas informações do sistema"	\
-	13 "Processos do sistema"		\
-	14 "Processos do sistema de forma hierarquica" \
-	15 "Fechar processos" 			\
-	16 "Arquivos abertos no sistema" \
-	17 "Ver INODE"				\
-	18 "Voltar" )
+	1 "Configurar teclado"			\
+	2 "Data e hora do sistema"		\
+	3 "Calendário"				\
+	4 "Alterar data do sistema"		\
+	5 "Alterar hora do sistema"		\
+	6 "Informações da cpu"			\
+	7 "Informações de disco e partições"	\
+	8 "Visualizar modulos carregados"	\
+	9 "Informações do barramento PCI" 	\
+	10 "Utilização de memória RAM"		\
+	11 "Quantidade de INODES disponíveis"	\
+	12 "Versão do Kernel "			\
+	13 "Todas informações do sistema"	\
+	14 "Processos do sistema"		\
+	15 "Processos do sistema de forma hierarquica" \
+	16 "Fechar processos" 			\
+	17 "Arquivos abertos no sistema"	\
+	18 "Ver INODE"				\
+	19 "Voltar" )
 case $OPCAO in
-	1) MDAEH ;;
-	2) CALEN ;;
-	3) EDATA ;;
-	4) EHORA ;;
-	5) INFCP ;;
-	6) EXDP ;;
-	7) MODC ;;
-	8) PCI2 ;;
-	9) UTM ;;
-	10) IND ;;
-	11) KERNEL ;;
-	12) ALLINF ;;
-	13) PROCSIS ;;
-	14) PROCSISH ;;
-	15) KILLPROC ;;
-	16) ARQPROC ;;
-	17) VINOD ;;
-	18) bash /Projeto/.config/menu.sh ;;
+	1) CONFIT ;;
+	2) MDAEH ;;
+	3) CALEN ;;
+	4) EDATA ;;
+	5) EHORA ;;
+	6) INFCP ;;
+	7) EXDP ;;
+	8) MODC ;;
+	9) PCI2 ;;
+	10) UTM ;;
+	11) IND ;;
+	12) KERNEL ;;
+	13) ALLINF ;;
+	14) PROCSIS ;;
+	15) PROCSISH ;;
+	16) KILLPROC ;;
+	17) ARQPROC ;;
+	18) VINOD ;;
+	19) bash /Projeto/.config/menu.sh ;;
 	*) bash /Projeto/.config/menu.sh ;;
 esac
 }
@@ -239,5 +241,99 @@ case $? in
 	*) dialog --msgbox "Erro $?" 0 0; menu;;
 esac
 }
+function CONFIT(){
+CONFIGT=$(dialog					\
+	--stdout				\
+	--menu "Escolha um Layout: "		\
+	0 0 0					\
+	1 "BR (Brasileiro)"			\
+	2 "IT (Italiano)"	 		\
+	3 "JP (Japônes)"			\
+	4 "ES (Espanhol)"			\
+	5 "US (Inglês)"				\
+	6 "FR (Francês)"				\
+	7 "Voltar")
+case $CONFIGT in
+	1) BRT ;;
+	2) ITT ;;
+	3) JPT ;;
+	4) EST ;;
+	5) UST ;;
+	6) FRT ;;
+	7) bash /Projeto/.config/menu.sh ;;
+	*) bash /Projeto/.config/menu.sh ;;
+esac
+}
+function BRT(){
+	cp /home/vagrant/Projeto/.config/keyboardbr /etc/default/
+	rm /etc/default/keyboard
+	mv /etc/default/keyboardbr /etc/default/keyboard
+	service keyboard-setup restart
+	case $? in
+	0) dialog --msgbox "Teclado configurado com sucesso" 0 0; menu;;
+	1|255) menu;;
+	*) dialog --msgbox "Erro $?" 0 0; menu;;
+esac
 
+}
+function ITT(){
+	cp /home/vagrant/Projeto/.config/keyboardit /etc/default/
+	rm /etc/default/keyboard
+	mv /etc/default/keyboardit /etc/default/keyboard
+	service keyboard-setup restart
+	case $? in
+	0) dialog --msgbox "Teclado configurado com sucesso" 0 0; menu;;
+	1|255) menu;;
+	*) dialog --msgbox "Erro $?" 0 0; menu;;
+esac
+
+}
+function JPT(){
+	cp /home/vagrant/Projeto/.config/keyboardjp /etc/default/
+	rm /etc/default/keyboard
+	mv /etc/default/keyboardjp /etc/default/keyboard
+	service keyboard-setup restart
+	case $? in
+	0) dialog --msgbox "Teclado configurado com sucesso" 0 0; menu;;
+	1|255) menu;;
+	*) dialog --msgbox "Erro $?" 0 0; menu;;
+esac
+
+}
+function EST(){
+	cp /home/vagrant/Projeto/.config/keyboardes /etc/default/
+	rm /etc/default/keyboard
+	mv /etc/default/keyboardes /etc/default/keyboard
+	service keyboard-setup restart
+	case $? in
+	0) dialog --msgbox "Teclado configurado com sucesso" 0 0; menu;;
+	1|255) menu;;
+	*) dialog --msgbox "Erro $?" 0 0; menu;;
+esac
+
+}
+function UST(){
+	cp /home/vagrant/Projeto/.config/keyboardus /etc/default/
+	rm /etc/default/keyboard
+	mv /etc/default/keyboardus /etc/default/keyboard
+	service keyboard-setup restart
+	case $? in
+	0) dialog --msgbox "Teclado configurado com sucesso" 0 0; menu;;
+	1|255) menu;;
+	*) dialog --msgbox "Erro $?" 0 0; menu;;
+esac
+
+}
+function FRT(){
+	cp /home/vagrant/Projeto/.config/keyboardfr /etc/default/
+	rm /etc/default/keyboard
+	mv /etc/default/keyboardfr /etc/default/keyboard
+	service keyboard-setup restart
+	case $? in
+	0) dialog --msgbox "Teclado configurado com sucesso" 0 0; menu;;
+	1|255) menu;;
+	*) dialog --msgbox "Erro $?" 0 0; menu;;
+esac
+
+}
 menu
