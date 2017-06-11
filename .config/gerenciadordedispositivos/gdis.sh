@@ -4,45 +4,49 @@ OPCAO=$(dialog					\
 	--stdout				\
 	--menu "Gerenciador de dispositivos"	\
 	0 0 0					\
-	1 "Configurar teclado"			\
-	2 "Data e hora do sistema"		\
-	3 "Calendário"				\
-	4 "Alterar data do sistema"		\
-	5 "Alterar hora do sistema"		\
-	6 "Informações da cpu"			\
-	7 "Informações de disco e partições"	\
-	8 "Visualizar modulos carregados"	\
-	9 "Informações do barramento PCI" 	\
-	10 "Utilização de memória RAM"		\
-	11 "Quantidade de INODES disponíveis"	\
-	12 "Versão do Kernel "			\
-	13 "Todas informações do sistema"	\
-	14 "Processos do sistema"		\
-	15 "Processos do sistema de forma hierarquica" \
-	16 "Fechar processos" 			\
-	17 "Arquivos abertos no sistema"	\
-	18 "Ver INODE"				\
-	19 "Voltar" )
+	1 "Reiniciar o computador"		\
+	2 "Desligar o computador"		\
+	3 "Configurar teclado"			\
+	4 "Data e hora do sistema"		\
+	5 "Calendário"				\
+	6 "Alterar data do sistema"		\
+	7 "Alterar hora do sistema"		\
+	8 "Informações da cpu"			\
+	9 "Informações de disco e partições"	\
+	10 "Visualizar modulos carregados"	\
+	11 "Informações do barramento PCI" 	\
+	12 "Utilização de memória RAM"		\
+	13 "Quantidade de INODES disponíveis"	\
+	14 "Versão do Kernel "			\
+	15 "Todas informações do sistema"	\
+	16 "Processos do sistema"		\
+	17 "Processos do sistema de forma hierarquica" \
+	18 "Fechar processos" 			\
+	19 "Arquivos abertos no sistema"	\
+	20 "Ver INODE"				\
+	21 "Voltar" )
 case $OPCAO in
-	1) CONFIT ;;
-	2) MDAEH ;;
-	3) CALEN ;;
-	4) EDATA ;;
-	5) EHORA ;;
-	6) INFCP ;;
-	7) EXDP ;;
-	8) MODC ;;
-	9) PCI2 ;;
-	10) UTM ;;
-	11) IND ;;
-	12) KERNEL ;;
-	13) ALLINF ;;
-	14) PROCSIS ;;
-	15) PROCSISH ;;
-	16) KILLPROC ;;
-	17) ARQPROC ;;
-	18) VINOD ;;
-	19) bash /Projeto/.config/menu.sh ;;
+	1) REINPC ;;
+	2) DESLIGPC ;;
+	3) CONFIT ;;
+	4) MDAEH ;;
+	5) CALEN ;;
+	6) EDATA ;;
+	7) EHORA ;;
+	8) INFCP ;;
+	9) EXDP ;;
+	10) MODC ;;
+	11) PCI2 ;;
+	12) UTM ;;
+	13) IND ;;
+	14) KERNEL ;;
+	15) ALLINF ;;
+	16) PROCSIS ;;
+	17) PROCSISH ;;
+	18) KILLPROC ;;
+	19) ARQPROC ;;
+	20) VINOD ;;
+	21) bash /Projeto/.config/menu.sh ;;
 	*) bash /Projeto/.config/menu.sh ;;
 esac
 }
@@ -336,4 +340,20 @@ function FRT(){
 esac
 
 }
+function REINPC(){
+	dialog --infobox "Reiniciando em 3 segundos..." 0 0
+
+	sleep 1
+
+	init 6
+}
+function DESLIGPC(){
+
+	dialog --infobox "Seu computador sera desligo em 2 segundos..." 0 0
+
+	sleep 1
+
+	init 0
+}
 menu
+
