@@ -14,17 +14,8 @@ OPCAO=$(dialog					\
 	8 "Informações da cpu"			\
 	9 "Informações de disco e partições"	\
 	10 "Visualizar modulos carregados"	\
-	11 "Informações do barramento PCI" 	\
-	12 "Utilização de memória RAM"		\
-	13 "Quantidade de INODES disponíveis"	\
-	14 "Versão do Kernel "			\
-	15 "Todas informações do sistema"	\
-	16 "Processos do sistema"		\
-	17 "Processos do sistema de forma hierarquica" \
-	18 "Fechar processos" 			\
-	19 "Arquivos abertos no sistema"	\
-	20 "Ver INODE"				\
-	21 "Voltar" )
+	11 "Próxima página" )
+
 case $OPCAO in
 	1) REINPC ;;
 	2) DESLIGPC ;;
@@ -36,18 +27,37 @@ case $OPCAO in
 	8) INFCP ;;
 	9) EXDP ;;
 	10) MODC ;;
-	11) PCI2 ;;
-	12) UTM ;;
-	13) IND ;;
-	14) KERNEL ;;
-	15) ALLINF ;;
-	16) PROCSIS ;;
-	17) PROCSISH ;;
-	18) KILLPROC ;;
-	19) ARQPROC ;;
-	20) VINOD ;;
-	21) bash /Projeto/.config/menu.sh ;;
+	11) PROX ;;
 	*) bash /Projeto/.config/menu.sh ;;
+esac
+}
+function PROX(){
+OPCAO=$(dialog					\
+	--stdout				\
+	--menu "Gerenciador de dispositivos"	\
+	0 0 0					\
+	1 "Informações do barramento PCI" 	\
+	2 "Utilização de memória RAM"		\
+	3 "Quantidade de INODES disponíveis"	\
+	4 "Versão do Kernel "			\
+	5 "Todas informações do sistema"	\
+	6 "Processos do sistema"		\
+	7 "Processos do sistema de forma hierarquica" \
+	8 "Fechar processos" 			\
+	9 "Arquivos abertos no sistema"	\
+	10 "Ver INODE" )
+case $OPCAO in
+	1) PCI2 ;;
+	2) UTM ;;
+	3) IND ;;
+	4) KERNEL ;;
+	5) ALLINF ;;
+	6) PROCSIS ;;
+	7) PROCSISH ;;
+	8) KILLPROC ;;
+	9) ARQPROC ;;
+	10) VINOD ;;
+	*) menu ;;
 esac
 }
 function MDAEH(){

@@ -82,62 +82,78 @@ CGRP(){
 	esac
 	groupadd $NOME
 	case $? in
-	0) dialog --msgbox "Grupo criado com sucesso!" 0 0; MENU;;
-	1) dialog --msgbox "Tente novamente!" 0 0; CUSR;;
-	9) dialog --msgbox "Esse grupo já existe" 0 0; MENU;;
-	*) dialog --msgbox "erro: $?" 0 0; MENU;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Grupo criado com sucesso!" 0 0; MENU;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Tente novamente!" 0 0; CUSR;;
+	9) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Esse grupo já existe" 0 0; MENU;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; MENU;;
 esac
 }
 AGRP(){
-	NOME=$(	dialog --stdout --inputbox "Digite o nome do grupo" 0 0 )
+	NOME=$(	dialog --stdout 				\
+		--backtitle "ROKUKISHI PROJECT"			\
+		 --ok-label Continuar 				\
+		--cancel-label Voltar
+		--inputbox "Digite o nome do grupo" 0 0 )
 	case $? in
 		1|255) MENU;;
 	esac
 	groupdel $NOME
 case $? in
-	0) dialog --msgbox "Grupo apagado com sucesso!" 0 0; MENU;;
-	1) dialog --msgbox "Tente novamente!" 0 0; AGRP;;
-	6) dialog --msgbox "Grupo inexistente" 0 0; MENU;;
-	*) dialog --msgbox "erro: $?" 0 0; MENU;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Grupo apagado com sucesso!" 0 0; MENU;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Tente novamente!" 0 0; AGRP;;
+	6) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Grupo inexistente" 0 0; MENU;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; MENU;;
 esac
 }
 APAS(){
-NOME=$( dialog --stdout --inputbox "Digite o nome do usuário" 0 0 )
+NOME=$( dialog --stdout				\
+		--backtitle "ROKUKISHI PROJECT"	\
+		 --ok-label Continuar		\
+		--cancel-label Voltar		\
+		 --inputbox "Digite o nome do usuário" 0 0 )
 	case $? in
 		1|255) MENU;;
 	esac
 passwd $NOME
 case $? in
-	0) dialog --msgbox "Senha alterada com sucesso!" 0 0 ; MENU;;
-	1) dialog --msgbox "Usuário não existe" 0 0; MENU;;
-	*) dialog --msgbox "Erro $?" 0 0 ; MENU;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Senha alterada com sucesso!" 0 0 ; MENU;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário não existe" 0 0; MENU;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0 ; MENU;;
 esac
 }
 AUGR(){
-	NOME=$(	dialog --stdout --inputbox "Digite o nome do usuario" 0 0 )
+	NOME=$(	dialog --stdout 			\
+			--backtitle "ROKUKISHI PROJECT"	\
+			 --ok-label Continuar		\
+			--cancel-label Voltar 		\
+			--inputbox "Digite o nome do usuario" 0 0 )
 	case $? in
 		1|255) MENU;;
 	esac
-	GRUPO=$( dialog --stdout --inputbox "Digite o nome do grupo" 0 0 )
+	GRUPO=$( dialog --stdout			\
+			 --backtitle "ROKUKISHI PROJECT"\
+			--ok-label Continuar		\
+			--cancel-label� Voltar		\
+			--inputbox "Digite o nome do grupo" 0 0 )
 	case $? in
 		1|255) MENU;;
 	esac
 	gpasswd -a  $NOME $GRUPO
 case $? in
-	0) dialog --msgbox "Usuario movido para $GRUPO" 0 0; MENU;;
-	1) dialog --msgbox "Tente novamente!" 0 0; AUGR;;
-	*) dialog --msgbox "Erro $?" 0 0; MENU;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuario movido para $GRUPO" 0 0; MENU;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Tente novamente!" 0 0; AUGR;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; MENU;;
 esac
 }
 MUSR(){
-	dialog --textbox /etc/passwd 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /etc/passwd 0 0
 case $? in
 	0) MENU;;
 	*) MENU;;
 esac
 }
 MGRP(){
-	dialog --textbox /etc/group 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /etc/group 0 0
 case $? in
 	0) MENU;;
 	*) MENU;;

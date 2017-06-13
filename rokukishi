@@ -8,7 +8,7 @@ case $? in
 	127) apt-get install dialog;;
 esac
 # Instala o Dialog
-dialog --backtitle "ROKUKIHSI PROJECT" --ok-label Continuar --msgbox "Sejam bem vindos ao gerenciador ROKUKISHI" 0 0
+dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Sejam bem vindos ao gerenciador ROKUKISHI" 0 0
 cd /Projeto
 bash /Projeto/.config/menu.sh
 # Chama um script do menu
