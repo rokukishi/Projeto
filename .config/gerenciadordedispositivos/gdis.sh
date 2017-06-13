@@ -269,8 +269,8 @@ case $CONFIGT in
 esac
 }
 function BRT(){
-	cp /home/vagrant/Projeto/.config/keyboardbr /etc/default/
-	rm /etc/default/keyboard
+	cp /Projeto/.config/teclado/keyboardbr /etc/default/
+	rm -rf /etc/default/keyboard
 	mv /etc/default/keyboardbr /etc/default/keyboard
 	service keyboard-setup restart
 	case $? in
@@ -281,8 +281,8 @@ esac
 
 }
 function ITT(){
-	cp /home/vagrant/Projeto/.config/keyboardit /etc/default/
-	rm /etc/default/keyboard
+	cp /Projeto/.config/teclado/keyboardit /etc/default/
+	rm -rf /etc/default/keyboard
 	mv /etc/default/keyboardit /etc/default/keyboard
 	service keyboard-setup restart
 	case $? in
@@ -293,8 +293,8 @@ esac
 
 }
 function JPT(){
-	cp /home/vagrant/Projeto/.config/keyboardjp /etc/default/
-	rm /etc/default/keyboard
+	cp /Projeto/.config/teclado/keyboardjp /etc/default/
+	rm -rf /etc/default/keyboard
 	mv /etc/default/keyboardjp /etc/default/keyboard
 	service keyboard-setup restart
 	case $? in
@@ -305,7 +305,7 @@ esac
 
 }
 function EST(){
-	cp /home/vagrant/Projeto/.config/keyboardes /etc/default/
+	cp /Projeto/.config/teclado/keyboardes /etc/default/
 	rm /etc/default/keyboard
 	mv /etc/default/keyboardes /etc/default/keyboard
 	service keyboard-setup restart
@@ -317,8 +317,8 @@ esac
 
 }
 function UST(){
-	cp /home/vagrant/Projeto/.config/keyboardus /etc/default/
-	rm /etc/default/keyboard
+	cp /Projeto/.config/teclado/keyboardus /etc/default/
+	rm -rf /etc/default/keyboard
 	mv /etc/default/keyboardus /etc/default/keyboard
 	service keyboard-setup restart
 	case $? in
@@ -329,8 +329,8 @@ esac
 
 }
 function FRT(){
-	cp /home/vagrant/Projeto/.config/keyboardfr /etc/default/
-	rm /etc/default/keyboard
+	cp /Projeto/.config/teclado/keyboardfr /etc/default/
+	rm -rf /etc/default/keyboard
 	mv /etc/default/keyboardfr /etc/default/keyboard
 	service keyboard-setup restart
 	case $? in
@@ -349,7 +349,7 @@ function REINPC(){
 }
 function DESLIGPC(){
 
-	dialog --infobox "Seu computador sera desligo em 2 segundos..." 0 0
+	dialog --infobox "Seu computador sera desligado em 2 segundos..." 0 0
 
 	sleep 1
 

@@ -2,20 +2,21 @@
 function menu(){
 opcao=$( dialog						\
 	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Selecionar				\
+	--cancel-label Voltar				\
 	--title "Listar Diretório"			\
 	--menu "Como deseja listar?"	 		\
 	0 0 0						\
 	1 "Mostrar apenas o conteúdo"			\
 	2 "Mostrar tamanho em KBytes"			\
 	3 "Mostrar arquivos ocultos"			\
-	4 "Mostrar permissões/grupos/donos/modificações"\
-	5 "Voltar" )
+	4 "Mostrar permissões/grupos/donos/modificações" )
 case $opcao in
 	1) list1 ;;
 	2) list2 ;;
 	3) list3 ;;
 	4) list4 ;;
-	5) bash /Projeto/.config/gerenciadordearquivos/garq.sh ;;
 	*) bash /Projeto/.config/gerenciadordearquivos/garq.sh ;;
 esac
 # Opções que permite o usuário escolher entre 4 listagens diferentes com suas respectivas caracteristicas mencionadas
@@ -24,6 +25,9 @@ esac
 function list1(){
 arq=$( dialog						\
 	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Continuar				\
+	--cancel-label Voltar				\
 	--title "Listar Diretório"			\
 	--inputbox "Digite o nome/local do diretório (sem espaço, caso seja preciso, utilize aspas no nome do diretório):"	\
 	10 60 )
@@ -36,11 +40,15 @@ ls $arq > /tmp/listar.txt
 # Mandando a listagem para um arquivo temporário
 case $? in
 	0) dialog	 					\
+		--backtitle "ROKUKISHI PROJECT"			\
+		--exit-label Sair				\
 		--title "Listagem"				\
 		--textbox /tmp/listar.txt 0 0; menu;;
 	2) dialog						\
+		--backtitle "ROKUKISHI PROJECT"			\
+		--ok-label Continuar				\
 		--msgbox "Diretório não existe" 0 0; menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 # Caso o retorno seja 0 Mostrará a lista via dialog
 # Caso seja 2 o diretório é inexistente
@@ -49,6 +57,9 @@ esac
 function list2(){
 arq=$( dialog						\
 	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Continuar				\
+	--cancel-label Voltar				\
 	--title "Listar Diretório"			\
 	--inputbox "Digite o nome/local do diretório (sem espaço, caso seja preciso, utilize aspas no nome do diretório):"	\
 	10 60 )
@@ -61,11 +72,15 @@ ls -la $arq > /tmp/listar.txt
 # Mandando a listagem para um arquivo temporário
 case $? in
 	0) dialog	 					\
+		--backtitle "ROKUKISHI PROJECT"			\
+		--exit-label Sair				\
 		--title "Listagem"				\
  		--textbox /tmp/listar.txt 0 0; menu;;
 	2) dialog						\
+		--backtitle "ROKUKISHI PROJECT"			\
+		--ok-label Continuar				\
 		--msgbox "Diretório não existe" 0 0; menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 # Caso o retorno seja 0 Mostrará a lista via dialog
 # Caso seja 2 o diretório é inexistente
@@ -74,6 +89,9 @@ esac
 function list3(){
 arq=$( dialog						\
 	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Continuar				\
+	--cancel-label Voltar				\
 	--title "Listar Diretório"			\
 	--inputbox "Digite o nome/local do diretório (sem espaço, caso seja preciso, utilize aspas no nome do diretório):"	\
 	10 60 )
@@ -86,11 +104,15 @@ ls -a $arq > /tmp/listar.txt
 # Mandando a listagem para um arquivo temporário
 case $? in
 	0) dialog	 					\
+		--backtitle "ROKUKISHI PROJECT"			\
+		--exit-label Sair				\
 		--title "Listagem"				\
 		--textbox /tmp/listar.txt 0 0; menu;;
 	2) dialog						\
+		--backtitle "ROKUKISHI PROJECT"			\
+		--ok-label Continuar				\
 		--msgbox "Diretório não existe" 0 0; menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 # Caso o retorno seja 0 Mostrará a lista via dialog
 # Caso seja 2 o diretório é inexistente
@@ -99,6 +121,9 @@ esac
 function list4(){
 arq=$( dialog						\
 	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Continuar				\
+	--cancel-label Voltar				\
 	--title "Listar Diretório"			\
 	--inputbox "Digite o nome/local do diretório (sem espaço, caso seja preciso, utilize aspas no nome do diretório):"	\
 	10 60 )
@@ -111,11 +136,15 @@ ls -lah $arq > /tmp/listar.txt
 # Mandando a listagem para um arquivo temporário
 case $? in
 	0) dialog	 					\
+		--backtitle "ROKUKISHI PROJECT"			\
+		--exit-label Sair				\
 		--title "Listagem"				\
 		--textbox /tmp/listar.txt 0 0; menu;;
 	2) dialog						\
+		--backtitle "ROKUKISHI PROJECT"			\
+		--ok-label Continuar				\
 		--msgbox "Diretório não existe" 0 0; menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 # Caso o retorno seja 0 Mostrará a lista via dialog
 # Caso seja 2 o diretório é inexistente

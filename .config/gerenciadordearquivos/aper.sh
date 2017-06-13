@@ -2,6 +2,9 @@
 function menu(){
 arq=$( dialog						\
 	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Continuar				\
+	--cancel-label Voltar				\
 	--title "Alterar permissão"			\
 	--fselect /					\
 	10 70 )
@@ -12,6 +15,9 @@ esac
 # Caso pressione Cancel ou ESC, volta para o script gerenciador de arquivos
 arq2=$( dialog						\
 	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Selecionar				\
+	--cancel-label Voltar				\
 	--title "Alterar permissão"			\
 	--menu "Permitir para o dono:"			\
 	0 0 0						\
@@ -21,8 +27,7 @@ arq2=$( dialog						\
 	4 "Leitura e Gravação"				\
 	5 "Leitura e Execução"				\
 	6 "Gravação e Execução"				\
-	7 "Leitura, Gravação e Execução"		\
-	8 "Voltar" )
+	7 "Leitura, Gravação e Execução" )
 case $arq2 in
 	1) p1=4; perg;;
 	2) p1=2; perg;;
@@ -31,8 +36,7 @@ case $arq2 in
 	5) p1=5; perg;;
 	6) p1=3; perg;;
 	7) p1=7; perg;;
-	8) bash /Projeto/.config/gerenciadordearquivos/garq.sh;;
-	*) dialog --msgbox "Opção invalida" 0 0; bash /Projeto/.config/gerenciadordearquivos/garq.sh;;
+	*) bash /Projeto/.config/gerenciadordearquivos/garq.sh;;
 esac
 # Aqui é selecionada a permissão para o dono do arquivo ou diretório
 # Salvando o resultado em uma váriavel de acordo com o número da permissão
@@ -42,6 +46,9 @@ esac
 function perg(){
 arq2=$( dialog						\
 	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Selecionar				\
+	--cancel-label Voltar				\
 	--title "Alterar permissão"			\
 	--menu "Permissão para o grupo:"		\
 	0 0 0 						\
@@ -51,8 +58,7 @@ arq2=$( dialog						\
 	4 "Leitura/Gravação"				\
 	5 "Leitura/Execução"				\
 	6 "Gravação/Execução"				\
-	7 "Leitura/Gravação/Execução"			\
-	8 "Voltar" )
+	7 "Leitura/Gravação/Execução" )
 case $arq2 in
 	1) p2=4; pero;;
 	2) p2=2; pero;;
@@ -61,8 +67,7 @@ case $arq2 in
 	5) p2=5; pero;;
 	6) p2=3; pero;;
 	7) p2=7; pero;;
-	8) menu;;
-	*) dialog --msgbox "Opção inválida" 0 0; bash /Projeto/.config/gerenciadordearquivos/garq.sh;;
+	*) bash /Projeto/.config/gerenciadordearquivos/garq.sh;;
 esac
 # Aqui é selecionada a permissão para o grupo do arquivo ou diretório
 # Salvando o resultado em outra váriavel de acordo com o número da permissão
@@ -72,6 +77,9 @@ esac
 function pero(){
 arq2=$( dialog						\
 	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Selecionar				\
+	--cancel-label Voltar				\
 	--title "Alterar permissão"			\
 	--menu "Permissão para outros:"			\
 	0 0 0						\
@@ -81,8 +89,7 @@ arq2=$( dialog						\
 	4 "Leitura/Gravação"				\
 	5 "Leitura/Execução"				\
 	6 "Gravação/Execução"				\
-	7 "Leitura/Gravação/Execução"			\
-	8 "Voltar" )
+	7 "Leitura/Gravação/Execução" )
 case $arq2 in
 	1) p3=4;;
 	2) p3=2;;
@@ -91,8 +98,7 @@ case $arq2 in
 	5) p3=5;;
 	6) p3=3;;
 	7) p3=7;;
-	8) perg;;
-	*) dialog --msgbox "Opção invalida" 0 0; bash /Projeto/.config/gerenciadordearquivos/garq.sh;;
+	*) bash /Projeto/.config/gerenciadordearquivos/garq.sh;;
 esac
 # Aqui é selecionada a permissão para outros do arquivo ou diretório
 # Salvando o resultado em outra váriavel de acordo com o número da permissão
@@ -101,9 +107,9 @@ esac
 chmod $p1$p2$p3 $arq
 # Utilizando todas as variáveis salvas, alteramos as permissões do dono, grupo e outros
 case $? in
-	0) dialog --msgbox "Permissões alteradas com sucesso" 0 0; bash /Projeto/.config/gerenciadordearquivos/garq.sh;;
-	1) dialog --msgbox "Não foi possivel alterar permissões" 0 0; menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Permissões alteradas com sucesso" 0 0; bash /Projeto/.config/gerenciadordearquivos/garq.sh;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Não foi possivel alterar permissões" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 # Caso o retorno seja 0, as permissões foram alteradas, voltando assim para o script gerenciador de arquivos
 # Caso seja 1, Mostra a impossibilidade de alterar, voltando ao menu para refazer o processo

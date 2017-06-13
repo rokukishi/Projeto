@@ -2,6 +2,9 @@
 function MENU(){
 OPCAO=$( dialog						\
 	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Selecionar				\
+	--cancel-label Voltar				\
 	--menu "Escolha uma das opções"			\
 	0 0 0						\
 	1 "Criar usuário"				\
@@ -11,8 +14,7 @@ OPCAO=$( dialog						\
 	5 "Criar ou alterar Senha"				\
 	6 "Alterar usuário do grupo"        		\
 	7 "Mostrar usuários"				\
-	8 "Mostrar grupos"				\
-	9 "Voltar" )
+	8 "Mostrar grupos" )
 case $OPCAO in
  	1) CUSR ;;
 	2) AUSR ;;
@@ -22,23 +24,22 @@ case $OPCAO in
 	6) AUGR ;;
 	7) MUSR ;;
 	8) MGRP ;;
-	9) bash /Projeto/.config/menu.sh ;;
 	*) bash /Projeto/.config/menu.sh	;;
 esac
 }
 CUSR(){
-	NOME=$(	dialog --stdout --inputbox "Digite o nome do usuário" 0 0)
+	NOME=$(	dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Digite o nome do usuário" 0 0)
 	case $? in
 		1|255) MENU;;
 	esac
 	useradd -m -s /bin/rokukishii $NOME
 case $? in
-	0) dialog --msgbox "Usuário criado com sucesso!" 0 0;;
-	1) dialog --msgbox "Tente novamente!" 0 0; CUSR;;
-	9) dialog --msgbox "Usuário já existe" 0 0; MENU;;
-	*) dialog --msgbox "erro: $?" 0 0; MENU;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário criado com sucesso!" 0 0;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Tente novamente!" 0 0; CUSR;;
+	9) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário já existe" 0 0; MENU;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; MENU;;
 esac
-dialog --yesno "É necessário criar uma senha para esse usuário para poder usá-lo. Deseja fazer isso agora?" 0 0
+dialog --backtitle "ROKUKISHI PROJECT" --yes-label Sim --no-label Não --yesno "É necessário criar uma senha para esse usuário para poder usá-lo. Deseja fazer isso agora?" 0 0
 v=$?
 passw
 }
@@ -49,11 +50,11 @@ case $v in
 	*) MENU;;
 esac
 case $volta in
-	0) dialog --msgbox "Senha criada com sucesso" 0 0; MENU;;
- 	1) dialog --msgbox "Senha inválida, ou não são iguais"	\
-	 0 0; dialog --yesno "Tentar novamente?" 0 0; n=$?;;
-	*) dialog --msgbox "Não foi possivel criar"		\
-	 0 0; dialog --yesno "Tentar novamente?" 0 0; n=$?;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Senha criada com sucesso" 0 0; MENU;;
+ 	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Senha inválida, ou não são iguais"	\
+	 0 0; dialog --backtitle "ROKUKISHI PROJECT" --yes-label Sim --no-label Não --yesno "Tentar novamente?" 0 0; n=$?;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Não foi possivel criar"		\
+	 0 0; dialog --backtitle "ROKUKISHI PROJECT" --yes-label Sim --no-label Não --yesno "Tentar novamente?" 0 0; n=$?;;
 esac
 case $n in
 	0) passw;;
@@ -62,20 +63,20 @@ case $n in
 esac
 }
 AUSR(){
-	NOME=$(	dialog --stdout --inputbox "Digite o nome do usuário" 0 0 )
+	NOME=$(	dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Digite o nome do usuário" 0 0 )
 	case $? in
 		1|255) MENU;;
 	esac
 	userdel -f $NOME
 case $? in
-	0) dialog --msgbox "Usuário apagado com sucesso!" 0 0; MENU;;
-	1) dialog --msgbox "Tente novamente!" 0 0; AUSR;;
-	6) dialog --msgbox "Usuário não existe" 0 0; MENU;;
-	*) dialog --msgbox "erro: $?" 0 0; MENU;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário apagado com sucesso!" 0 0; MENU;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Tente novamente!" 0 0; AUSR;;
+	6) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário não existe" 0 0; MENU;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; MENU;;
 esac
 }
 CGRP(){
-	NOME=$(	dialog --stdout --inputbox "Digite o nome do grupo" 0 0 )
+	NOME=$(	dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Digite o nome do grupo" 0 0 )
 	case $? in
 		1|255) MENU;;
 	esac

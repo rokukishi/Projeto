@@ -1,6 +1,9 @@
 #!/bin/bash
 opcao=$( dialog						\
 	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Selecionar				\
+	--cancel-label Sair				\
 	--title "Menu"					\
 	--menu "Escolha um gerenciador:" 		\
 	0 0 0						\
@@ -8,8 +11,7 @@ opcao=$( dialog						\
 	2 "Gerenciador de Usuários"			\
 	3 "Gerenciador de Redes"			\
 	4 "Gerenciador de Dispositivos"			\
-	5 "Gerenciador de Pacotes"			\
-	6 "Sair" )
+	5 "Gerenciador de Pacotes" )
 case $opcao in
 	1) bash /Projeto/.config/gerenciadordearquivos/garq.sh;;
 	2) bash /Projeto/.config/gerenciadordeusuarios/gusr.sh;;
