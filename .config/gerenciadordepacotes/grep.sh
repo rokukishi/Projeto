@@ -29,12 +29,12 @@ esac
 function instapk(){
 APK=$( dialog						\
 	--stdout					\
-	--backtitle "ROKUKISHI PROJECT"			\
 	--ok-label Continuar				\
 	--cancel-label Voltar				\
+	--backtitle "ROKUKISHI PROJECT"			\
 	--title "Instalar aplicativo"			\
 	--inputbox "Nome do aplicativo"			\
-	5 40)
+	0 0)
 case $? in
 	1|255) menu;;
 esac
@@ -59,7 +59,7 @@ APG=$( dialog						\
 	--cancel-label Voltar				\
 	--title "Remover aplicativo"			\
 	--inputbox "Nome do aplicativo"			\
-	5 40 )
+	0 0 )
 case $? in
 	1|255) menu;;
 esac
@@ -91,7 +91,7 @@ dialog					\
 	--yes-label Sim				\
 	--no-label Não				\
 	--title "Informação"			\
-	--yesno "É necessário fazer a instalação do git. Continuar?" 5 40
+	--yesno "É necessário fazer a instalação do git. Continuar?" 0 0
 # Avisará o usuário da necessidade de instalar um pacote antes de continuar
 case $? in
 	0) apt-get --force-yes install git -y > /tmp/gitinst.log | dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --title "Instalando Github" --tailbox /tmp/gitinst.log 100 100; gitno;;
@@ -108,7 +108,7 @@ gite=$( dialog					\
 		--ok-label Continuar				\
 		--cancel-label Voltar				\
 		--title "Importar GITHUB"	\
-		--inputbox "Nome do usuário:" 5 40 )
+		--inputbox "Nome do usuário:" 0 0 )
 case $? in
 	1|255) menu;;
 esac
@@ -120,7 +120,7 @@ gite2=$( dialog					\
 		--ok-label Continuar				\
 		--cancel-label Voltar				\
 		--title "Importar GITHUB"	\
-		--inputbox "Nome do repositório:" 5 40 )
+		--inputbox "Nome do repositório:" 0 0 )
 case $? in
 	1|255) menu;;
 esac
@@ -138,12 +138,13 @@ esac
 # Caso seja um retorno desconhecido, mostrará o erro ocorrido e voltará ao menu assim como os outros restornos
 }
 function atlREP(){
-dialog --backtitle "ROKUKISHI PROJECT" --yes-label Sim --no-label N�o --title "Isso pode demorar um pouco" --yesno "Deseja continuar?" 5 40
+dialog --backtitle "ROKUKISHI PROJECT" --yes-label Sim --no-label Não --title "Isso pode demorar um pouco" --yesno "Deseja continuar?" 0 0
 # Pedido de confirmação caso o usuário queira mesmo continuar com a atualizar
 # Pois pode demorar
 case $? in
 	0) apt-get update > /tmp/att.log | dialog --backtitle "ROKUKISHI PROJECT" --title "Atualizando" --tailbox /tmp/att.log 100 100; volta=$?;;
 	1) menu;;
+	*) menu;;
 esac
 # Caso seja sim, atualizará, salvando seu retorno
 # Caso seja não, voltará ao menu
@@ -157,12 +158,13 @@ esac
 # Caso seja um retorno desconhecido, mostrará o erro ocorrido e voltará ao menu assim como os outros retornos
 }
 function atlAPK(){
-dialog --backtitle "ROKUKISHI PROJECT" --yes-label Sim --no-label N�o --title "Isso pode demorar alguns minutos" --yesno "Deseja continuar?" 5 40
+dialog --backtitle "ROKUKISHI PROJECT" --yes-label Sim --no-label Não --title "Isso pode demorar alguns minutos" --yesno "Deseja continuar?" 0 0
 # Pedido de confirmação caso o usuário queira mesmo continuar com a atualizar
 # Pois tal atualizar pode demorar muito
 case $? in
 	0) apt-get upgrade > /tmp/att.log | dialog --backtitle "ROKUKISHI PROJECT" --title "Atualizando" --tailbox /tmp/att.log; volta=$?;;
 	1) menu;;
+	*) menu;;
 esac
 # Caso seja sim, atualizará, salvando seu retorno
 # Caso seja não, voltará ao menu
