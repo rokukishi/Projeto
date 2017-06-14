@@ -16,11 +16,13 @@ OPCAO=$(dialog					\
 	4 "Reiniciar interface de rede"	\
 	5 "Visualizar Endereço IP"		\
 	6 "Alterar endereço IP/Máscara" 	\
-	7 "Alterar hostname"			\
-	8 "Gateway"				\
-	9 "Remover Gateway"			\
-	10 "Adicionar Gateway"			\
-	11 "Testar conexão (ping)")
+	7 "Adicionar IP"			\
+	8 "Remover IP"				\
+	9 "Alterar hostname"			\
+	10 "Gateway"				\
+	11 "Remover Gateway"			\
+	12 "Adicionar Gateway"			\
+	13 "Testar conexão (ping)")
 case $OPCAO in
 	1) VINT ;;
 	2) SRED ;;
@@ -28,11 +30,13 @@ case $OPCAO in
 	4) REIN ;;
 	5) VIP  ;;
 	6) ATIP ;;
-	7) ATHS ;;
-	8) GTWY ;;
-	9) RTWY ;;
-	10) DTWY ;; 
-	11) PING ;;
+	7) ADDIP ;;
+	8) REMIP ;;
+	9) ATHS ;;
+	10) GTWY ;;
+	11) RTWY ;;
+	12) DTWY ;;
+	13) PING ;;
 	*) bash /Projeto/.config/menu.sh;;
 esac
 # Um menu com algumas opções que permitem o usuário gerenciar sua rede
@@ -64,7 +68,7 @@ int=$( dialog					\
 		--ok-label Continuar		\
 		--cancel-l�abel Voltar		\
 		--title "Escolha a interface"	\
-		--inputbox "Interface número:"	\
+		--inputbox "Interface:"	\
 		0 0 )
 case $? in
 	1|255) menu;;
@@ -98,7 +102,7 @@ int=$( dialog					\
 		 --ok-label Continuar		\
 		--cancel-label Voltar		\
 		--title "Escolha a interface"	\
-		--inputbox "Interface número:"	\
+		--inputbox "Interface:"	\
 		0 0 )
 case $? in
 	1|255) menu;;
@@ -132,14 +136,14 @@ int=$( dialog					\
 		--ok-label Continuar		\
 		--cancel-label Voltar		\
 		--title "Escolha a interface"	\
-		--inputbox "Interface número:"	\
+		--inputbox "Interface:"	\
 		0 0 )
 case $? in
 	1|255) menu;;
 esac
 # Pede para que o usuário digite o número da interface que deseja reiniciar
 # De acordo com as informações vistas anteriormente
-/etc/init.d/networking restart
+/etc/init.d/networking restart | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando Interface" 0 0
 # Comando para reiniciar a interface (eth) escolhida pelo usuário
 case $? in
 	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Reiniciada com sucesso" 0 0; menu;;
@@ -173,7 +177,7 @@ int=$( dialog					\
 		 --ok-label Continuar		\
 		--cancel-label Voltar		\
 		--title "Escolha a interface"	\
-		--inputbox "Interface número:"	\
+		--inputbox "Interface"	\
 		0 0 )
 case $? in
 	1|255) menu;;
@@ -192,7 +196,7 @@ menu=$( dialog					\
 		1 "DHCP"			\
 		2 "Estático" )
 case $menu in
-	1) dhclient eth$int; menu;;
+	1) dhccp;;
 	2) estatico;;
 	*) menu;;
 esac
@@ -244,29 +248,29 @@ mask=$( dialog 				\
 		24 "255.0.0.0" )
 case $mask in
 	1) padrao;;
-	2) mask=30;;
-	3) mask=29;;
-	4) mask=28;;
-	5) mask=27;;
-	6) mask=26;;
-	7) mask=25;;
-	8) mask=24;;
-	9) mask=23;;
-	10) mask=22;;
-	11) mask=21;;
-	12) mask=20;;
-	13) mask=19;;
-	14) mask=18;;
-	15) mask=17;;
-	16) mask=16;;
-	17) mask=15;;
-	18) mask=14;;
-	19) mask=13;;
-	20) mask=12;;
-	21) mask=11;;
-	22) mask=10;;
-	23) mask=9;;
-	24) mask=8;;
+	2) mask="255.255.255.252";;
+	3) mask="255.255.255.248";;
+	4) mask="255.255.255.240";;
+	5) mask="255.255.255.224";;
+	6) mask="255.255.255.192";;
+	7) mask="255.255.255.128";;
+	8) mask="255.255.255.0";;
+	9) mask="255.255.254.0";;
+	10) mask="255.255.252.0";;
+	11) mask="255.255.248.0";;
+	12) mask="255.255.240.0";;
+	13) mask="255.255.224.0";;
+	14) mask="255.255.192.0";;
+	15) mask="255.255.128.0";;
+	16) mask="255.255.0.0";;
+	17) mask="255.254.0.0";;
+	18) mask="255.252.0.0";;
+	19) mask="255.248.0.0";;
+	20) mask="255.240.0.0";;
+	21) mask="255.224.0.0";;
+	22) mask="255.192.0.0";;
+	23) mask="255.128.0.0";;
+	24) mask="255.0.0.0";;
 	*) menu;;
 esac
 masc
@@ -277,18 +281,42 @@ masc
 }
 function padrao(){
 case $ip in
-	192.168.0.*) mask=24;;
-	172.16.*) mask=16;;
-	10.*) mask=8;;
-	*) mask=24;;
+	192.168.0.*) mask="255.255.255.0";;
+	172.16.*) mask="255.255.0.0";;
+	10.*) mask="255.0.0.0";;
+	*) mask="255.255.255.0";;
 esac
 masc
 # Aqui se Define algumas máscaras padrões de acordo com o que o usuário digitar como ip
 # Chamando um função no final
 }
 function masc(){
-ip addr add $ip/$mask dev eth$int
-# Com as informações dadas pelo usuário será dado o novo endereço ip a interface escolhida, assim como a máscara
+mv /Projeto/.config/ip/estatico /Projeto/.config/ip/interfaces
+cp /Projeto/.config/ip/interfaces /Projeto/.config/ip/estatico
+echo "auto $int" >> /Projeto/.config/ip/interfaces
+echo "allow-hotplug $int" >> /Projeto/.config/ip/interfaces
+echo "iface $int inet static" >> /Projeto/.config/ip/interfaces
+echo "address $ip" >> /Projeto/.config/ip/interfaces
+echo "netmask $mask" >> /Projeto/.config/ip/interfaces
+mv /Projeto/.config/ip/interfaces /etc/network/interfaces
+/etc/init.d/networking restart | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando interface de rede" 0 0
+case $? in
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Alterado com sucesso" 0 0; menu;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Impossivel alterar. Tente novamente" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
+esac
+# Caso o retorno seja 0, avisará do sucesso ao alterar ip e mascara
+# Reiniciando assim a interface de rede
+# Caso seja 1, avisará da impossibilidade ao alterar
+# Caso seja um retorno desconhecido, mostrará o erro e voltará ao menu assim como os outros retornos
+}
+function dhccp(){
+mv /Projeto/.config/ip/estaticoedhcp /Projeto/.config/ip/interfaces
+cp /Projeto/.config/ip/interfaces /Projeto/.config/ip/estaticoedhcp
+echo "allow-hotplug $int" >> /Projeto/.config/ip/interfaces
+echo "iface $int inet dhcp" >> /Projeto/.config/ip/interfaces
+mv /Projeto/.config/ip/interfaces /etc/network/interfaces
+/etc/init.d/networking restart | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando interface de rede" 0 0
 case $? in
 	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Alterado com sucesso" 0 0; menu;;
 	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Impossivel alterar. Tente novamente" 0 0; menu;;

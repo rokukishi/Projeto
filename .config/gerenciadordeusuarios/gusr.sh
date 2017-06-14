@@ -12,10 +12,11 @@ OPCAO=$( dialog						\
 	2 "apagar usuário"				\
 	3 "Criar grupo"					\
 	4 "apagar grupo"				\
-	5 "Criar ou alterar Senha"				\
-	6 "Alterar usuário do grupo"        		\
-	7 "Mostrar usuários"				\
-	8 "Mostrar grupos" )
+	5 "Criar ou alterar Senha"			\
+	6 "Adicionar usuário a um grupo"        		\
+	7 "Criar um usuário dentro de um grupo"		\
+	8 "Mostrar usuários"				\
+	9 "Mostrar grupos" )
 case $OPCAO in
  	1) CUSR ;;
 	2) AUSR ;;
@@ -23,21 +24,22 @@ case $OPCAO in
 	4) AGRP ;;
 	5) APAS	;;
 	6) AUGR ;;
-	7) MUSR ;;
-	8) MGRP ;;
+	7) CUSG ;;
+	8) MUSR ;;
+	9) MGRP ;;
 	*) bash /Projeto/.config/menu.sh	;;
 esac
 }
 CUSR(){
-	NOME=$(	dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Digite o nome do usuário" 0 0)
+	NOME=$(	dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Nome do usuário" 0 0)
 	case $? in
 		1|255) MENU;;
 	esac
 	useradd -m -s /bin/rokukishii $NOME
 case $? in
-	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário criado com sucesso!" 0 0;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário $NOME criado com sucesso!" 0 0;;
 	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Tente novamente!" 0 0; CUSR;;
-	9) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário já existe" 0 0; MENU;;
+	9) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário $NOME já existe" 0 0; MENU;;
 	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; MENU;;
 esac
 dialog --backtitle "ROKUKISHI PROJECT" --yes-label Sim --no-label Não --yesno "É necessário criar uma senha para esse usuário para poder usá-lo. Deseja fazer isso agora?" 0 0
@@ -64,28 +66,28 @@ case $n in
 esac
 }
 AUSR(){
-	NOME=$(	dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Digite o nome do usuário" 0 0 )
+	NOME=$(	dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Nome do usuário" 0 0 )
 	case $? in
 		1|255) MENU;;
 	esac
 	userdel -f $NOME
 case $? in
-	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário apagado com sucesso!" 0 0; MENU;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário $NOME apagado com sucesso!" 0 0; MENU;;
 	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Tente novamente!" 0 0; AUSR;;
-	6) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário não existe" 0 0; MENU;;
+	6) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário $NOME não existe" 0 0; MENU;;
 	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; MENU;;
 esac
 }
 CGRP(){
-	NOME=$(	dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Digite o nome do grupo" 0 0 )
+	NOME=$(	dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Nome do grupo" 0 0 )
 	case $? in
 		1|255) MENU;;
 	esac
 	groupadd $NOME
 	case $? in
-	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Grupo criado com sucesso!" 0 0; MENU;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Grupo $NOME criado com sucesso!" 0 0; MENU;;
 	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Tente novamente!" 0 0; CUSR;;
-	9) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Esse grupo já existe" 0 0; MENU;;
+	9) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Grupo $NOME já existe" 0 0; MENU;;
 	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; MENU;;
 esac
 }
@@ -94,15 +96,15 @@ AGRP(){
 		--backtitle "ROKUKISHI PROJECT"			\
 		 --ok-label Continuar 				\
 		--cancel-label Voltar				\
-		--inputbox "Digite o nome do grupo" 0 0 )
+		--inputbox "Nome do grupo" 0 0 )
 	case $? in
 		1|255) MENU;;
 	esac
 	groupdel $NOME
 case $? in
-	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Grupo apagado com sucesso!" 0 0; MENU;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Grupo $NOME apagado com sucesso!" 0 0; MENU;;
 	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Tente novamente!" 0 0; AGRP;;
-	6) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Grupo inexistente" 0 0; MENU;;
+	6) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Grupo $NOMEinexistente" 0 0; MENU;;
 	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; MENU;;
 esac
 }
@@ -111,14 +113,14 @@ NOME=$( dialog --stdout				\
 		--backtitle "ROKUKISHI PROJECT"	\
 		 --ok-label Continuar		\
 		--cancel-label Voltar		\
-		 --inputbox "Digite o nome do usuário" 0 0 )
+		 --inputbox "Nome do usuário" 0 0 )
 	case $? in
 		1|255) MENU;;
 	esac
 passwd $NOME
 case $? in
 	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Senha alterada com sucesso!" 0 0 ; MENU;;
-	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário não existe" 0 0; MENU;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário $NOME não existe" 0 0; MENU;;
 	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0 ; MENU;;
 esac
 }
@@ -127,24 +129,44 @@ AUGR(){
 			--backtitle "ROKUKISHI PROJECT"	\
 			 --ok-label Continuar		\
 			--cancel-label Voltar 		\
-			--inputbox "Digite o nome do usuario" 0 0 )
+			--inputbox "Nome do usuario" 0 0 )
 	case $? in
 		1|255) MENU;;
 	esac
 	GRUPO=$( dialog --stdout			\
 			 --backtitle "ROKUKISHI PROJECT"\
 			--ok-label Continuar		\
-			--cancel-label� Voltar		\
-			--inputbox "Digite o nome do grupo" 0 0 )
+			--cancel-label Voltar		\
+			--inputbox "Nome do grupo" 0 0 )
 	case $? in
 		1|255) MENU;;
 	esac
 	gpasswd -a  $NOME $GRUPO
 case $? in
-	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuario movido para $GRUPO" 0 0; MENU;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuario $NOME movido para $GRUPO" 0 0; MENU;;
 	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Tente novamente!" 0 0; AUGR;;
 	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; MENU;;
 esac
+}
+CUSG(){
+NOME=$(	dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Nome do usuário" 0 0)
+case $? in
+	1|255) MENU;;
+esac
+NOME2=$( dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Nome do grupo" 0 0)
+case $? in
+	1|255) MENU;;
+esac
+useradd -m -s /bin/rokukishii $NOME -G $NOME2
+case $? in
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário $NOME criado com sucesso e inserido no grupo $NOME2!" 0 0;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Tente novamente!" 0 0; CUSR;;
+	9) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Usuário $NOME já existe" 0 0; MENU;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; MENU;;
+esac
+dialog --backtitle "ROKUKISHI PROJECT" --yes-label Sim --no-label Não --yesno "É necessário criar uma senha para esse usuário para poder usá-lo. Deseja fazer isso agora?" 0 0
+v=$?
+passw
 }
 MUSR(){
 	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /etc/passwd 0 0

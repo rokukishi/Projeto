@@ -1,6 +1,4 @@
 #!/bin/bash
-# Mudar Caixas de dialog (criar arquivos etc) de inputbox para select, para fazer caminhon absoluto
-
 function entrar(){
 user="rokukishi"
 pass="adglmm"
@@ -143,7 +141,8 @@ opcao=$( dialog 					\
 	7 "Descompactar Arquivo/Diretório"		\
 	8 "Editar arquivo"				\
 	9 "Voltar um diretório"			\
-	10 "Ir para a raiz" )
+	10 "Ir para a raiz" 				\
+	11 "Mostrar diretório atual" )
 case $opcao in
 	1) rename ;;
 	2) n="d"; entrar ;;
@@ -155,6 +154,7 @@ case $opcao in
 	8) edit ;;
 	9) cd ..; bash /Projeto/.config/menu.sh;;
 	10) cd /; bash /Projeto/.config/menu.sh;;
+	11) diratual;;
 	*) menu;;
 esac
 # Menu onde esta disponivel algumas funções, algumas chamando scripts separadamente, outras chamando funções do próorio script
@@ -166,29 +166,40 @@ arq=$( dialog						\
 	--backtitle "ROKUKISHI PROJECT"			\
 	--ok-label Continuar				\
 	--cancel-label Voltar				\
-	--title "Criar arquivo"				\
-	--inputbox "Digite o nome/local do arquivo (sem espaço, caso seja preciso, utilize aspas no nome do arquivo):"				\
-	10 60 )
+	--title "Local: "				\
+	--fselect /					\
+	10 70 )
 case $? in
 	1|255) menu;;
 esac
 # Pede para o usuário Digitar o nome do arquivo a ser criado, armazenando em sua variável arq
 # Case pressione Cancel ou ESC, voltará ao menu
-cat $arq
+arquivo=$( dialog						\
+	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Continuar				\
+	--cancel-label Voltar				\
+	--title "Criar arquivo"				\
+	--inputbox "Nome:"				\
+	0 0 )
+case $? in
+	1|255) menu;;
+esac
+cat $arq$arquivo
 # Mostrará o conteúdo do arquivo
 # Comando necessário para ver se o arquivo ja existe antes de criá-lo
 case $? in
-	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "O arquivo ja existe" 0 0; menu;;
-	1) > $arq; volta=$?;;
-	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --title "Erro $?" --msgbox "Não foi possivel criar o arquivo" 0 0; menu;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "O arquivo '$arquivo' ja existe" 0 0; menu;;
+	1) > $arq$arquivo; volta=$?;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --title "Erro $?" --msgbox "Não foi possivel criar o arquivo '$arquivo'" 0 0; menu;;
 esac
 # Se retornar 0 saberemos que o arquivos ja é existente e avisará o usuário, voltando para o menu
 # Se retornar 1 o arquivo não existe, assim criamos o arquivo e salvamos o retorno
 # Caso dê outro retorno, nos avisará o erro ocorrido e voltará ao menu
 case $volta in
-	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "O arquivo foi criado com sucesso" 0 0; menu;;
-	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Não foi possivel criar o arquivo" 0 0; menu;;
-	*) dialgo --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --title "Erro $?" --msgbox "Não foi possivel criar o arquivo" 0 0; menu;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "O arquivo '$arquivo' foi criado com sucesso" 0 0; menu;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Não foi possivel criar o arquivo '$arquivo'" 0 0; menu;;
+	*) dialgo --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --title "Erro $?" --msgbox "Não foi possivel criar o arquivo '$arquivo'" 0 0; menu;;
 esac
 # Caso o retorno seja 0 é avisado que o arquivo foi criado com sucesso, voltando ao menu
 # Caso 1, será avisada sua falha na criação, voltando ao menu
@@ -234,29 +245,40 @@ arq=$( dialog						\
 	--backtitle "ROKUKISHI PROJECT"			\
 	--ok-label Continuar				\
 	--cancel-label Voltar				\
-	--title "Criar diretório"			\
-	--inputbox "Digite o nome/local do diretório (sem espaço, caso seja preciso, utilize aspas no nome do diretório):"	\
-	10 60 )
+	--title "Local:"			\
+	--fselect / 					\
+	10 70 )
 case $? in
 	1|255) menu;;
 esac
 # Pede para o usuário Digitar o nome do diretório a ser criado, armazenando em sua variável arq
 # Case pressione Cancel ou ESC, voltará ao menu
-cd $arq
+arquivo=$( dialog						\
+	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Continuar				\
+	--cancel-label Voltar				\
+	--title "Criar diretório"				\
+	--inputbox "Nome:"				\
+	0 0 )
+case $? in
+	1|255) menu;;
+esac
+cd $arq$arquivo
 # Entrará no diretório
 # Comando necessário para ver se o diretório ja existe antes de criá-lo
 case $? in
-	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "O diretório ja existe" 0 0; cd /Projeto; menu;;
-	1) mkdir $arq; volta=$?;;
-	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Não foi possivel criar o diretório" 0 0; menu;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "O diretório '$arquivo' já existe" 0 0; cd /Projeto; menu;;
+	1) mkdir $arq$arquivo; volta=$?;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Não foi possivel criar o diretório '$arquivo'" 0 0; menu;;
 esac
 # Se retornar 0 saberemos que o diretório ja é existente e avisará o usuário, voltará para a pasta do projeto, voltando para o menu
 # Se retornar 1 o diretório não existe, assim criamos o diretório e salvamos o retorno
 # Caso dê outro retorno, nos avisará o erro ocorrido e voltará ao menu
 case $volta in
-	0) dialog --msgbox "O diretório foi criado com sucesso" 0 0; menu;;
-	1) dialog --msgbox "Não foi possivel apagar o diretório" 0 0; menu;;
-	*) dialgo --title "Erro $?" --msgbox "Não foi possivel apagar o diretório" 0 0; menu;;
+	0) dialog --msgbox "O diretório '$arquivo' foi criado com sucesso" 0 0; menu;;
+	1) dialog --msgbox "Não foi possivel criar o diretório '$arquivo'" 0 0; menu;;
+	*) dialgo --title "Erro $?" --msgbox "Não foi possivel criar o diretório '$arquivo'" 0 0; menu;;
 esac
 # Caso o retorno seja 0 é avisado que o diretório foi criado com sucesso, voltando ao menu
 # Caso 1, será avisada sua falha na criação, voltando ao menu
@@ -321,7 +343,7 @@ arq=$( dialog						\
 		--backtitle "ROKUKISHI PROJECT"		\
 		--ok-label Continuar			\
 		--cancel-label Voltar			\
-		--title "Mostrar conteúdo de arquivo:"	\
+		--title "Localize o arquivo"	\
 		--fselect / 10 70 )
 case $? in
 	1|255) menu;;
@@ -528,8 +550,8 @@ arq=$( dialog 						\
 		--backtitle "ROKUKISHI PROJECT"		\
 		--ok-label Continuar			\
 		--cancel-label Voltar			\
-		--title "Renomear"			\
-		--inputbox "Nome atual (sem espaço, caso seja preciso, utilize aspas no nome do arquivo ou diretório):" 10 60 )
+		--title "Seleciona apenas o local:"			\
+		--fselect / 10 70 )
 case $? in
 	1|255) proxima;;
 esac
@@ -541,13 +563,23 @@ arq2=$( dialog 						\
 		--ok-label Continuar			\
 		--cancel-label Voltar			\
 		--title "Renomear"			\
-		--inputbox "Alterar para:" 8 50 )
+		--inputbox "Nome atual:" 0 0 )
+case $? in
+	1|255) proxima;;
+esac
+arq3=$( dialog 						\
+		--stdout				\
+		--backtitle "ROKUKISHI PROJECT"		\
+		--ok-label Continuar			\
+		--cancel-label Voltar			\
+		--title "Renomear"			\
+		--inputbox "Para:" 0 0 )
 case $? in
 	1|255) proxima;;
 esac
 # Pedirá ao usuário o nome do arquivo ou diretório que deseja, e salvará o nome em sua variável arq
 # Caso pressione Calcel ou ESC, voltará ao menu
-mv $arq $arq2
+mv $arq$arq2 $arq$arq3
 # Renomeará para o nome escolhido
 case $? in
 	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Renomeado com sucesso" 0 0; proxima;;
@@ -621,7 +653,7 @@ arq=$( dialog 						\
 		1 "Adicionar arquivo ou diretório"		\
 		2 "Agrupar" )
 case $arq in
-	1) nome[$x]=$( dialog --stdout --title "Adicionar arquivo ou diretório" --inputbox "Nome (sem espaço, caso seja preciso, utilize aspas no nome do arquivo ou diretório):" 10 60 ); let x=($x+1); aaed;;
+	1) nome[$x]=$( dialog --stdout --title "Adicionar arquivo ou diretório" --fselect / 10 70 ); let x=($x+1); aaed;;
 	2) tar -cvf $name.tar ${nome[@]} > /tmp/agrupar.txt; dialog --textbox /tmp/agrupar.txt 0 0; proxima;;
 	*) proxima;;
 esac
@@ -784,5 +816,12 @@ esac
 # Caso o retorno seja 0, após a edição do arquivo, avisará que foi editado com sucesso
 # Caso 1 O arquivo nao existe
 # Caso o retorno seja desconhecido, voltará diretamente ao menu assim como os outros retornos
+}
+function diratual(){
+pwd > /tmp/dira.txt
+dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/dira.txt 0 0
+case $? in
+	*) proxima;;
+esac
 }
 menu
