@@ -2,6 +2,9 @@
 function menu(){
 OPCAO=$(dialog					\
 	--stdout				\
+	--backtitle "ROKUKISHI PROJECT"		\
+	--ok-label Selecionar			\
+	--cancel-label Voltar			\
 	--menu "Gerenciador de dispositivos"	\
 	0 0 0					\
 	1 "Reiniciar o computador"		\
@@ -34,6 +37,9 @@ esac
 function PROX(){
 OPCAO=$(dialog					\
 	--stdout				\
+	--backtitle "ROKUKISHI PROJECT"		\
+	--ok-label Selecionar			\
+	--cancel-label Voltar			\
 	--menu "Gerenciador de dispositivos"	\
 	0 0 0					\
 	1 "Informações do barramento PCI" 	\
@@ -62,202 +68,199 @@ esac
 }
 function MDAEH(){
 date > /tmp/datahora.txt
-dialog --textbox /tmp/datahora.txt 0 0
+dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/datahora.txt 0 0
 case $? in
 	0) menu;;
 	1|255) menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 }
 function CALEN(){
-dialog --title "Calendário" --calendar '' 0 0
+dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --title "Calendário" --calendar '' 0 0
 case $? in
 	*) menu;;
 esac
 }
 function EDATA(){
-mes=$( dialog --stdout --inputbox "Mês:" 0 0 )
+mes=$( dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Mês:" 0 0 )
 case $? in
 	1|255) menu;;
 esac
-dia=$( dialog --stdout --inputbox "Dia:" 0 0 )
+dia=$( dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Dia:" 0 0 )
 case $? in
 	1|255) menu;;
 esac
-ano=$( dialog --stdout --inputbox "Ano:" 0 0 )
+ano=$( dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Ano:" 0 0 )
 case $? in
 	1|255) menu;;
 esac
-hora=$( dialog --stdout --inputbox "Hora:" 0 0 )
+hora=$( dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Hora:" 0 0 )
 case $? in
 	1|255) menu;;
 esac
-minuto=$( dialog --stdout --inputbox "Minutos:" 0 0 )
+minuto=$( dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Minutos:" 0 0 )
 case $? in
 	1|255) menu;;
 esac
 date $mes$dia$hora$minuto$ano
 date > /tmp/data.txt
-dialog --textbox /tmp/data.txt 0 0
+dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/data.txt 0 0
 case $? in
 	0) menu;;
 	1|255) menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 }
 function EHORA(){
 horas=$(dialog					\
 		--stdout			\
+		--backtitle "ROKUKISHI PROJECT"	\
+		--ok-label Continuar		\
+		--cancel-label Voltar		\
 		--title "Ajustar o relógio"	\
-		--timebox "/nDica: use as setas e o TAB" 0 0 )
+		--timebox "Dica: use as setas e o TAB" 0 0 )
 date +%T -s $horas
 date +%T > /tmp/hora.txt
-dialog --textbox /tmp/hora.txt 0 0
+dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/hora.txt 0 0
 case $? in
 	0) menu;;
 	1|255) menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 }
 function INFCP(){
 	lscpu > /tmp/cpuinf.txt
-	dialog --textbox /tmp/cpuinf.txt 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/cpuinf.txt 0 0
 case $? in
 	0) menu;;
 	1|255) menu;;
-	*) dialog --infobox "erro: $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; menu;;
 esac
 }
 function EXDP(){
 	fdisk -l > /tmp/cpuinf.txt
-	dialog --textbox /tmp/cpuinf.txt 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/cpuinf.txt 0 0
 case $? in
 	0) menu;;
 	1|255) menu;;
-	*) dialog --infobox "erro: $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; menu;;
 esac
 }
 function MODC(){
 	lsmod > /tmp/cpuinf.txt
-	dialog --textbox /tmp/cpuinf.txt 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/cpuinf.txt 0 0
 case $? in
 	0) menu;;
 	1|255) menu;;
-	*) dialog --infobox "erro: $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; menu;;
 esac
 }
 function PCI2(){
 	lspci -vv > /tmp/pciinf.txt
-	dialog --textbox /tmp/pciinf.txt 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/pciinf.txt 0 0
 
 case $? in
-	0) menu;;
-	1|255) menu;;
-	*) dialog --infobox "erro: $?" 0 0; menu;;
+	0) PROX;;
+	1|255) PROX;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; PROX;;
 esac
 }
 function UTM(){
 	free -h > /tmp/infmem.txt
-	dialog --textbox /tmp/infmem.txt 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/infmem.txt 0 0
 case $? in
-	0) menu;;
-	1|255) menu;;
-	*) dialog --infobox "erro: $?" 0 0; menu;;
+	0) PROX;;
+	1|255) PROX;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; PROX;;
 esac
 }
 function IND(){
 	df -ih > /tmp/ino.txt
-	dialog --textbox /tmp/ino.txt 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/ino.txt 0 0
 case $? in
-	0) menu;;
-	1|255) menu;;
-	*) dialog --infobox "erro: $?" 0 0; menu;;
+	0) PROX;;
+	1|255) PROX;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; PROX;;
 esac
 }
 function KERNEL(){
 	uname -v > /tmp/ino.txt
-	dialog --textbox /tmp/ino.txt 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/ino.txt 0 0
 case $? in
-	0) menu;;
-	1|255) menu;;
-	*) dialog --infobox "erro: $?" 0 0; menu;;
+	0) PROX;;
+	1|255) PROX;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; PROX;;
 esac
 }
 function ALLINF(){
 	uname -a > /tmp/ino.txt
-	dialog --textbox /tmp/ino.txt 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/ino.txt 0 0
 case $? in
-	0) menu;;
-	1|255) menu;;
-	*) dialog --infobox "erro: $?" 0 0; menu;;
+	0) PROX;;
+	1|255) PROX;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; PROX;;
 esac
 }
 function PROCSIS(){
 	ps aux > /tmp/ino.txt
-	dialog --textbox /tmp/ino.txt 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/ino.txt 0 0
 case $? in
-	0) menu;;
-	1|255) menu;;
-	*) dialog --infobox "erro: $?" 0 0; menu;;
+	0) PROX;;
+	1|255) PROX;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; PROX;;
 esac
 }
 function PROCSISH(){
 	pstree > /tmp/ino.txt
-	dialog --textbox /tmp/ino.txt 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/ino.txt 0 0
 case $? in
-	0) menu;;
-	1|255) menu;;
-	*) dialog --infobox "erro: $?" 0 0; menu;;
+	0) PROX;;
+	1|255) PROX;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; PROX;;
 esac
 }
 function KILLPROC(){
-	kill=$(dialog --stdout --inputbox "Digite o PID do processo que deseja fechar: " 8 50)
+	kill=$(dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Digite o PID do processo que deseja fechar: " 8 50)
 case $? in
-	1|255) menu;;
+	1|255) PROX;;
 esac
 	kill -9 $kill
 case $? in
-	0) dialog --msgbox "Encerrado com sucesso" 0 0; menu;;
-	1) dialog --msgbox "Não foi possivel encerrar processo" 0 0; menu;;
-	*) dialog --infobox "erro: $?" 0 0; menu;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Encerrado com sucesso" 0 0; PROX;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Não foi possivel encerrar processo" 0 0; PROX;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; PROX;;
 esac
 }
 function ARQPROC(){
 	lsof > /tmp/ino.txt
-	dialog --textbox /tmp/ino.txt 0 0
+	dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --textbox /tmp/ino.txt 0 0
 case $? in
-	0) menu;;
-	1|255) menu;;
-	*) dialog --infobox "erro: $?" 0 0; menu;;
-esac
-}
-function ARQPROC(){
-lsof > /tmp/ino.txt
-dialog --textbox /tmp/ino.txt 0 0
-case $? in
-	0) menu;;
-	1|255) menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	0) PROX;;
+	1|255) PROX;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "erro: $?" 0 0; PROX;;
 esac
 }
 function VINOD(){
-dialog --msgbox "Não se esqueça de usar / quando desejar ver INODES de diretório" 0 0
-dialog --msgbox "Digite o caminho completo para arquivos em outros diretórios" 0 0
-ino=$( dialog --stdout --inputbox "Nome do arquivo/diretório" 0 0 )
+dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Não se esqueça de usar / quando desejar ver INODES de diretório" 0 0
+dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Digite o caminho completo para arquivos em outros diretórios" 0 0
+ino=$( dialog --stdout --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --cancel-label Voltar --inputbox "Nome do arquivo/diretório" 0 0 )
 case $? in
-	1|255) menu;;
+	1|255) PROX;;
 esac
 ls -i $ino > /tmp/ino.txt
-dialog --title "INODE: $ino" --textbox /tmp/ino.txt 0 0 
+dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --title "INODE: $ino" --textbox /tmp/ino.txt 0 0 
 case $? in
-	0) menu;;
-	1|255) menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	0) PROX;;
+	1|255) PROX;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; PROX;;
 esac
 }
 function CONFIT(){
 CONFIGT=$(dialog					\
 	--stdout				\
+	--backtitle "ROKUKISHI PROJECT"		\
+	--ok-label Selecionar			\
+	--cancel-label Voltar			\
 	--menu "Escolha um Layout: "		\
 	0 0 0					\
 	1 "BR (Brasileiro)"			\
@@ -265,8 +268,7 @@ CONFIGT=$(dialog					\
 	3 "JP (Japônes)"			\
 	4 "ES (Espanhol)"			\
 	5 "US (Inglês)"				\
-	6 "FR (Francês)"				\
-	7 "Voltar")
+	6 "FR (Francês)" )
 case $CONFIGT in
 	1) BRT ;;
 	2) ITT ;;
@@ -274,7 +276,6 @@ case $CONFIGT in
 	4) EST ;;
 	5) UST ;;
 	6) FRT ;;
-	7) bash /Projeto/.config/menu.sh ;;
 	*) bash /Projeto/.config/menu.sh ;;
 esac
 }
@@ -284,9 +285,9 @@ function BRT(){
 	mv /etc/default/keyboardbr /etc/default/keyboard
 	service keyboard-setup restart
 	case $? in
-	0) dialog --msgbox "Teclado configurado com sucesso" 0 0; menu;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Teclado configurado com sucesso" 0 0; menu;;
 	1|255) menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 
 }
@@ -296,9 +297,9 @@ function ITT(){
 	mv /etc/default/keyboardit /etc/default/keyboard
 	service keyboard-setup restart
 	case $? in
-	0) dialog --msgbox "Teclado configurado com sucesso" 0 0; menu;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Teclado configurado com sucesso" 0 0; menu;;
 	1|255) menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 
 }
@@ -308,9 +309,9 @@ function JPT(){
 	mv /etc/default/keyboardjp /etc/default/keyboard
 	service keyboard-setup restart
 	case $? in
-	0) dialog --msgbox "Teclado configurado com sucesso" 0 0; menu;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Teclado configurado com sucesso" 0 0; menu;;
 	1|255) menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 
 }
@@ -320,9 +321,9 @@ function EST(){
 	mv /etc/default/keyboardes /etc/default/keyboard
 	service keyboard-setup restart
 	case $? in
-	0) dialog --msgbox "Teclado configurado com sucesso" 0 0; menu;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Teclado configurado com sucesso" 0 0; menu;;
 	1|255) menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 
 }
@@ -332,9 +333,9 @@ function UST(){
 	mv /etc/default/keyboardus /etc/default/keyboard
 	service keyboard-setup restart
 	case $? in
-	0) dialog --msgbox "Teclado configurado com sucesso" 0 0; menu;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Teclado configurado com sucesso" 0 0; menu;;
 	1|255) menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 
 }
@@ -344,25 +345,36 @@ function FRT(){
 	mv /etc/default/keyboardfr /etc/default/keyboard
 	service keyboard-setup restart
 	case $? in
-	0) dialog --msgbox "Teclado configurado com sucesso" 0 0; menu;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Teclado configurado com sucesso" 0 0; menu;;
 	1|255) menu;;
-	*) dialog --msgbox "Erro $?" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 
 }
 function REINPC(){
-	dialog --infobox "Reiniciando em 3 segundos..." 0 0
-
+	dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando em 3 segundos..." 0 0
 	sleep 1
-
+	dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando em 2 segundos..." 0 0
+	sleep 1
+	dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando em 1 segundos..." 0 0
+	sleep 1
+	dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando" 0 0
+	sleep 1
 	init 6
 }
 function DESLIGPC(){
-
-	dialog --infobox "Seu computador sera desligado em 2 segundos..." 0 0
-
+	dialog --backtitle "ROKUKISHI PROJECT" --infobox "Seu computador sera desligado em 5 segundos..." 0 0
 	sleep 1
-
+	dialog --backtitle "ROKUKISHI PROJECT" --infobox "Seu computador sera desligado em 4 segundos..." 0 0
+	sleep 1
+	dialog --backtitle "ROKUKISHI PROJECT" --infobox "Seu computador sera desligado em 3 segundos..." 0 0
+	sleep 1
+	dialog --backtitle "ROKUKISHI PROJECT" --infobox "Seu computador sera desligado em 2 segundos..." 0 0
+	sleep 1
+	dialog --backtitle "ROKUKISHI PROJECT" --infobox "Seu computador sera desligado em 1 segundos..." 0 0
+	sleep 1
+	dialog --backtitle "ROKUKISHI PROJECT" --infobox "Desligando" 0 0
+	sleep 1
 	init 0
 }
 menu

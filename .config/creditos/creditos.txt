@@ -1,0 +1,14 @@
+Integrantes do grupo ROKUKISHI:
+-Álisson 
+-Daniele
+-Gabriel
+-Leandro
+-Matheus H.
+-Matheus N.
+
+Referências Bibliográficas:
+Agredecemos a equipe Anonymous pela ajuda.
+Ferramenta de auxílio: aurelio.net/shell/dialog/#textbox
+Links nos quais retiramos alguns comandos:
+*https://www.vivaolinux.com.br/artigo/Como-gerenciar-usuarios-e-grupo
+*https://www.vivaolinux.com.br/artigo/Gerenciando-arquivos-com-o-Shell

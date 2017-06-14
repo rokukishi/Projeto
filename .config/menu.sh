@@ -11,18 +11,16 @@ opcao=$( dialog						\
 	2 "Gerenciador de Usuários"			\
 	3 "Gerenciador de Redes"			\
 	4 "Gerenciador de Dispositivos"			\
-	5 "Gerenciador de Pacotes" )
+	5 "Gerenciador de Pacotes" 			\
+	6 "Créditos e agradecimentos" )
 case $opcao in
 	1) bash /Projeto/.config/gerenciadordearquivos/garq.sh;;
 	2) bash /Projeto/.config/gerenciadordeusuarios/gusr.sh;;
 	3) bash /Projeto/.config/gerenciadorderedes/gred.sh;;
 	4) bash /Projeto/.config/gerenciadordedispositivos/gdis.sh;;
 	5) bash /Projeto/.config/gerenciadordepacotes/grep.sh;;
-	255) exit 0 ;;
-esac
-case $? in
-	1|255) exit 0 ;;
-	*) exit 0 ;;
+	6) bash /Projeto/.config/creditos/creditos.sh;;
+	*) exit;;
 esac
 # Temos aqui o menu completo, onde se pede que o usuário escolha um dos gereciadores disponiveis
 # Chamando assim o script de seu gerenciador
