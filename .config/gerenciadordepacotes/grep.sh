@@ -1,4 +1,7 @@
 #!/bin/bash
+# menu: Executar aplicativo
+# menu: Entrar no terminal ( nao sei se é nesse gerenciador )
+# menu: apagar dependencias de pacote
 clear
 function menu(){
 opcao=$( dialog						\
@@ -40,7 +43,7 @@ case $? in
 esac
 # Pede para o usuário digitar o nome do pacote que deseja instalar
 # Caso pressione ESC ou Cancel voltará ao menu
-apt-get --force-yes install $APK -y > /tmp/instalar.log | dialog --backtitle "ROKUKISHI PROJECT" --title "Instalando $APK" --tailbox /tmp/instalar.log 100 100
+apt-get --force-yes install $APK -y | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Instalando, aguade..." 0 0
 # Comando necessário para forçar a instalação do pacote
 case $? in 
 	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Instalado com sucesso" 0 0; menu;;
@@ -65,16 +68,20 @@ case $? in
 esac
 # Pede para o usuário digitar o nome do pacote que deseja remover
 # Caso pressione ESC ou Cancel voltará ao menu
-apt-get remove -y $APG > /tmp/apg.log | dialog --backtitle "ROKUKISHI PROJECT" --title "Aguarde" --tailbox /tmp/apg.log 100 100
+apt-get remove -y $APG | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Apagando, aguarde..." 0 0
 # Comando necessário para forçar a remoção do pacote
 case $? in
-	0) parg;;
+	0) dialog --backtitle "ROKUKISHI PROJECT" --yes-label Sim --no-label Não --title "Apagado com sucesso" --yesno "Deseja apagar as dependências do pacote?" 0 0; volta=$?;;
 	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Impossivel remover aplicativo" 0 0; menu;;
 	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 # Caso o retorno seja 0, chamará uma função, que apagara todos os arquivos de configuração do pacote
 # Caso seja 1, avisará da impossibilidade ao remover e voltará ao menu
 # Caso seja um retorno desconhecido, mostrará o erro ocorrido e voltará ao menu
+case $volta in
+	0) parg;;
+	*) menu;;
+esac
 }
 function expGIT(){
 git > /tmp/gittest.txt
@@ -94,7 +101,7 @@ dialog					\
 	--yesno "É necessário fazer a instalação do git. Continuar?" 0 0
 # Avisará o usuário da necessidade de instalar um pacote antes de continuar
 case $? in
-	0) apt-get --force-yes install git -y > /tmp/gitinst.log | dialog --backtitle "ROKUKISHI PROJECT" --exit-label Sair --title "Instalando Github" --tailbox /tmp/gitinst.log 100 100; gitno;;
+	0) apt-get --force-yes install git -y | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Instalando, aguarde..." 0 0; gitno;;
 	1) menu;;
 	*) menu;;
 esac
@@ -126,7 +133,7 @@ case $? in
 esac
 # Pede para o usuário digitar o nome do repositório que deseja importar para a sua máquina
 # Caso pressione ESC ou Cancel voltará ao menu
-git clone http://github.com/$gite/$gite2
+git clone http://github.com/$gite/$gite2 | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Importando repositório, aguarde..." 0 0
 # Comando necessário para importar o repositório, do usuário desejado
 case $? in
 	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Importado com sucesso" 0 0; menu;;
@@ -142,7 +149,7 @@ dialog --backtitle "ROKUKISHI PROJECT" --yes-label Sim --no-label Não --title "
 # Pedido de confirmação caso o usuário queira mesmo continuar com a atualizar
 # Pois pode demorar
 case $? in
-	0) apt-get update > /tmp/att.log | dialog --backtitle "ROKUKISHI PROJECT" --title "Atualizando" --tailbox /tmp/att.log 100 100; volta=$?;;
+	0) apt-get --force-yes update -y | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Atualizando, aguarde..." 0 0; volta=$?;;
 	1) menu;;
 	*) menu;;
 esac
@@ -162,7 +169,7 @@ dialog --backtitle "ROKUKISHI PROJECT" --yes-label Sim --no-label Não --title "
 # Pedido de confirmação caso o usuário queira mesmo continuar com a atualizar
 # Pois tal atualizar pode demorar muito
 case $? in
-	0) apt-get upgrade > /tmp/att.log | dialog --backtitle "ROKUKISHI PROJECT" --title "Atualizando" --tailbox /tmp/att.log; volta=$?;;
+	0) apt-get --force-yes upgrade -y| dialog --backtitle "ROKUKISHI PROJECT" --infobox "Atualizando, aguarde..." 0 0; volta=$?;;
 	1) menu;;
 	*) menu;;
 esac
@@ -178,7 +185,7 @@ esac
 # Caso seja um retorno desconhecido, mostrará o erro ocorrido e voltará ao menu assim como os outros retornos
 }
 function parg(){
-apt-get purge $APK -y > /tmp/apg.log | dialog --backtitle "ROKUKISHI PROJECT" --title "Apagando" --tailbox /tmp/apg.log 100 100
+apt-get --force-yes purge $APK -y | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Removendo dependências, aguarde..." 0 0
 # Comando para apagar a força completamente o pacote
 case $? in
 	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Removido com sucesso" 0 0; menu;;

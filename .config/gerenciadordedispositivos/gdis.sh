@@ -1,4 +1,5 @@
 #!/bin/bash
+# nenhuma ideia ate agr kkkkkkkkkkkkkkkkkkk
 function menu(){
 OPCAO=$(dialog					\
 	--stdout				\

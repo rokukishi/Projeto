@@ -1,4 +1,5 @@
 #/bin/bash
+# Criar um usuário dentro de um grupo
 function MENU(){
 OPCAO=$( dialog						\
 	--stdout					\
@@ -92,7 +93,7 @@ AGRP(){
 	NOME=$(	dialog --stdout 				\
 		--backtitle "ROKUKISHI PROJECT"			\
 		 --ok-label Continuar 				\
-		--cancel-label Voltar
+		--cancel-label Voltar				\
 		--inputbox "Digite o nome do grupo" 0 0 )
 	case $? in
 		1|255) MENU;;

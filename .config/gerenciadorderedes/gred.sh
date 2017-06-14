@@ -1,4 +1,7 @@
 #!/bin/bash
+# menu: adicionar ip
+# menu: apagar ip
+# arrumar alterar ip, para se escolher estatico, alterar dentro do interfaces, vice e versa
 function menu(){
 OPCAO=$(dialog					\
 	--stdout				\

@@ -1,4 +1,6 @@
 #!/bin/bash
+# Mudar Caixas de dialog (criar arquivos etc) de inputbox para select, para fazer caminhon absoluto
+
 function entrar(){
 user="rokukishi"
 pass="adglmm"
