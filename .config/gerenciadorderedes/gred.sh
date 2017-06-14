@@ -1,7 +1,5 @@
 #!/bin/bash
-# menu: adicionar ip
 # menu: apagar ip
-# arrumar alterar ip, para se escolher estatico, alterar dentro do interfaces, vice e versa
 function menu(){
 OPCAO=$(dialog					\
 	--stdout				\
@@ -17,12 +15,11 @@ OPCAO=$(dialog					\
 	5 "Visualizar Endereço IP"		\
 	6 "Alterar endereço IP/Máscara" 	\
 	7 "Adicionar IP"			\
-	8 "Remover IP"				\
-	9 "Alterar hostname"			\
-	10 "Gateway"				\
-	11 "Remover Gateway"			\
-	12 "Adicionar Gateway"			\
-	13 "Testar conexão (ping)")
+	8 "Alterar hostname"			\
+	9 "Gateway"				\
+	10 "Remover Gateway"			\
+	11 "Adicionar Gateway"			\
+	12 "Testar conexão (ping)")
 case $OPCAO in
 	1) VINT ;;
 	2) SRED ;;
@@ -31,12 +28,11 @@ case $OPCAO in
 	5) VIP  ;;
 	6) ATIP ;;
 	7) ADDIP ;;
-	8) REMIP ;;
-	9) ATHS ;;
-	10) GTWY ;;
-	11) RTWY ;;
-	12) DTWY ;;
-	13) PING ;;
+	8) ATHS ;;
+	9) GTWY ;;
+	10) RTWY ;;
+	11) DTWY ;;
+	12) PING ;;
 	*) bash /Projeto/.config/menu.sh;;
 esac
 # Um menu com algumas opções que permitem o usuário gerenciar sua rede
@@ -122,29 +118,8 @@ esac
 # Assim como os outros retornos
 }
 function REIN(){
-ip addr > /tmp/interface.txt
-# Manda as informações das interfaces de rede para um arquivo temporário
-	dialog                        	  \
-	--backtitle "ROKUKISHI PROJECT" 	\
-	--exit-label Sair		\
-	--title "Interfaces" \
-	--textbox /tmp/interface.txt 0 0
-# Mostra esse arquivo via dialog
-int=$( dialog					\
-		--stdout			\
-		--backtitle "ROKUKISHI PROJECT" 	\
-		--ok-label Continuar		\
-		--cancel-label Voltar		\
-		--title "Escolha a interface"	\
-		--inputbox "Interface:"	\
-		0 0 )
-case $? in
-	1|255) menu;;
-esac
-# Pede para que o usuário digite o número da interface que deseja reiniciar
-# De acordo com as informações vistas anteriormente
-/etc/init.d/networking restart | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando Interface" 0 0
-# Comando para reiniciar a interface (eth) escolhida pelo usuário
+service networking restart | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando Interface de rede" 0 0
+# Comando para reiniciar a interface escolhida pelo usuário
 case $? in
 	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Reiniciada com sucesso" 0 0; menu;;
 	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Não foi possivel reiniciar" 0 0; menu;;
@@ -184,7 +159,7 @@ case $? in
 esac
 # Pede para que o usuário digite o número da interface que deseja desligar
 # De acordo com as informações vistas anteriormente
-ip addr flush dev eth$int
+ip addr flush dev $int
 # Comando necessário para deletar o endereço ip da interface escolhida
 menu=$( dialog					\
 		--stdout			\
@@ -291,15 +266,16 @@ masc
 # Chamando um função no final
 }
 function masc(){
-mv /Projeto/.config/ip/estatico /Projeto/.config/ip/interfaces
-cp /Projeto/.config/ip/interfaces /Projeto/.config/ip/estatico
+mv /Projeto/.config/ip/estaticoedhcp /Projeto/.config/ip/interfaces
+cp /Projeto/.config/ip/interfaces /Projeto/.config/ip/estaticoedhcp
+echo >> /Projeto/.config/ip/interfaces
 echo "auto $int" >> /Projeto/.config/ip/interfaces
 echo "allow-hotplug $int" >> /Projeto/.config/ip/interfaces
 echo "iface $int inet static" >> /Projeto/.config/ip/interfaces
 echo "address $ip" >> /Projeto/.config/ip/interfaces
 echo "netmask $mask" >> /Projeto/.config/ip/interfaces
 mv /Projeto/.config/ip/interfaces /etc/network/interfaces
-/etc/init.d/networking restart | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando interface de rede" 0 0
+service networking restart | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando interface de rede" 0 0
 case $? in
 	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Alterado com sucesso" 0 0; menu;;
 	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Impossivel alterar. Tente novamente" 0 0; menu;;
@@ -313,10 +289,11 @@ esac
 function dhccp(){
 mv /Projeto/.config/ip/estaticoedhcp /Projeto/.config/ip/interfaces
 cp /Projeto/.config/ip/interfaces /Projeto/.config/ip/estaticoedhcp
+echo >> /Projeto/.config/ip/interfaces
 echo "allow-hotplug $int" >> /Projeto/.config/ip/interfaces
 echo "iface $int inet dhcp" >> /Projeto/.config/ip/interfaces
 mv /Projeto/.config/ip/interfaces /etc/network/interfaces
-/etc/init.d/networking restart | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando interface de rede" 0 0
+service networking restart | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando interface de rede" 0 0
 case $? in
 	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Alterado com sucesso" 0 0; menu;;
 	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Impossivel alterar. Tente novamente" 0 0; menu;;
@@ -326,6 +303,119 @@ esac
 # Reiniciando assim a interface de rede
 # Caso seja 1, avisará da impossibilidade ao alterar
 # Caso seja um retorno desconhecido, mostrará o erro e voltará ao menu assim como os outros retornos
+}
+function ADDIP(){
+ip addr > /tmp/rede.txt
+dialog --backtitle "ROKUKISHI PROJECT" --exit-label Continuar --title "Interfaces" --textbox /tmp/rede.txt 0 0
+int=$( dialog					\
+		--stdout			\
+		--backtitle "ROKUKISHI PROJECT"	\
+		 --ok-label Continuar		\
+		--cancel-label Voltar		\
+		--title "Escolha a interface"	\
+		--inputbox "Interface"	\
+		0 0 )
+case $? in
+	1|255) menu;;
+esac
+ip=$( dialog 				\
+	--stdout			\
+	--backtitle "ROKUKISHI PROJECT"	\
+	--ok-label Continuar		\
+	--cancel-label Voltar		\
+	--inputbox "Address:" 0 0 )
+case $? in
+	1|255) menu;;
+esac
+mask=$( dialog 				\
+	--stdout			\
+	--backtitle "ROKUKISHI PROJECT"	\
+	--ok-label Selecionar		\
+	--cancel-label Voltar		\
+	--menu "Netmask:"		\
+		0 0 0			\
+		1 "Padrão"			\
+		2 "255.255.255.252"		\
+		3 "255.255.255.248"		\
+		4 "255.255.255.240"		\
+		5 "255.255.255.224"		\
+		6 "255.255.255.192"		\
+		7 "255.255.255.128"		\
+		8 "255.255.255.0"		\
+		9 "255.255.254.0"		\
+		10 "255.255.252.0"		\
+		11 "255.255.248.0"		\
+		12 "255.255.240.0"		\
+		13 "255.255.224.0"		\
+		14 "255.255.192.0"		\
+		15 "255.255.128.0"		\
+		16 "255.255.0.0"		\
+		17 "255.254.0.0"		\
+		18 "255.252.0.0"		\
+		19 "255.248.0.0"		\
+		20 "255.240.0.0"		\
+		21 "255.224.0.0"		\
+		22 "255.192.0.0"		\
+		23 "255.128.0.0"		\
+		24 "255.0.0.0" )
+case $mask in
+	1) pad;;
+	2) mask="255.255.255.252";;
+	3) mask="255.255.255.248";;
+	4) mask="255.255.255.240";;
+	5) mask="255.255.255.224";;
+	6) mask="255.255.255.192";;
+	7) mask="255.255.255.128";;
+	8) mask="255.255.255.0";;
+	9) mask="255.255.254.0";;
+	10) mask="255.255.252.0";;
+	11) mask="255.255.248.0";;
+	12) mask="255.255.240.0";;
+	13) mask="255.255.224.0";;
+	14) mask="255.255.192.0";;
+	15) mask="255.255.128.0";;
+	16) mask="255.255.0.0";;
+	17) mask="255.254.0.0";;
+	18) mask="255.252.0.0";;
+	19) mask="255.248.0.0";;
+	20) mask="255.240.0.0";;
+	21) mask="255.224.0.0";;
+	22) mask="255.192.0.0";;
+	23) mask="255.128.0.0";;
+	24) mask="255.0.0.0";;
+	*) menu;;
+esac
+addd
+}
+function pad(){
+case $ip in
+	192.168.0.*) mask="255.255.255.0";;
+	172.16.*) mask="255.255.0.0";;
+	10.*) mask="255.0.0.0";;
+	*) mask="255.255.255.0";;
+esac
+addd
+}
+function addd(){
+grep :1 /etc/network/interfaces
+case $? in
+	1) echo >> /etc/network/interfaces; echo "auto $int:1" >> /etc/network/interfaces; echo "iface $int:1 inet static" >> /etc/network/interfaces; echo "address $ip" >> /etc/network/interfaces; echo "netmask $mask" >> /etc/network/interfaces; service networking restart | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando interface de rede" 0 0; service networking restart; dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Adicionado com sucesso" 0 0; menu;;
+esac
+n=1
+until (( $? == 1 )); do
+	let n=$n+1
+	grep :$n /etc/network/interfaces
+done
+echo >> /etc/network/interfaces
+echo "auto $int:$n" >> /etc/network/interfaces
+echo "iface $int:$n inet static" >> /etc/network/interfaces
+echo "address $ip" >> /etc/network/interfaces
+echo "netmask $mask" >> /etc/network/interfaces
+service networking restart | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Reiniciando interface de rede" 0 0
+case $? in
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Adicionado com sucesso" 0 0; menu;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Não foi possivel adicionar" 0 0; menu;;
+esac
 }
 function ATHS (){
 	dialog                        	 	\

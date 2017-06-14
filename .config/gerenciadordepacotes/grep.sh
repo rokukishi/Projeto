@@ -1,8 +1,5 @@
 #!/bin/bash
-# menu: Executar aplicativo
 # menu: Entrar no terminal ( nao sei se é nesse gerenciador )
-# menu: apagar dependencias de pacote
-clear
 function menu(){
 opcao=$( dialog						\
 	--stdout					\
@@ -14,17 +11,21 @@ opcao=$( dialog						\
 	0 0 0						\
 	1 "Instalar Aplicativos"			\
 	2 "Apagar Aplicativos"				\
-	3 "Importar GITHUB"				\
-	4 "Atualizar Aplicativos"			\
-	5 "Atualizar Repositorios"			\
-	6 "Listar Pacotes" )
+	3 "Apagar dependências"				\
+	4 "Importar GITHUB"				\
+	5 "Atualizar Aplicativos"			\
+	6 "Atualizar Repositorios"			\
+	7 "Executar aplicativo"				\
+	8 "Listar Pacotes" )
 case $opcao in
 	1) instapk ;;
 	2) apgAPK ;;
-	3) expGIT ;;
-	4) atlAPK ;;
-	5) atlREP ;;
-	6) lista ;;
+	3) adepen ;;
+	4) expGIT ;;
+	5) atlAPK ;;
+	6) atlREP ;;
+	7) exect ;;
+	8) lista ;;
 	*) bash /Projeto/.config/menu.sh ;;
 esac
 # Menu com opções para download, vizualição e remoção de pecotes
@@ -81,6 +82,24 @@ esac
 case $volta in
 	0) parg;;
 	*) menu;;
+esac
+}
+function adepen(){
+APK=$( dialog 						\
+	--stdout					\
+	--backtitle "ROKUKISHI PROJECT"			\
+	--ok-label Continuar				\
+	--cancel-label Voltar				\
+	--title "Apagar dependências"			\
+	--inputbox "Nome do pacote:" 0 0 )
+case $? in
+	1|255) menu;;
+esac
+apt-get --force-yes purge $APK -y | dialog --backtitle "ROKUKISHI PROJECT" --infobox "Removendo dependências, aguarde..." 0 0
+case $? in
+	0) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Removido com sucesso" 0 0; menu;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Impossivel remover dependencias" 0 0; menu;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0; menu;;
 esac
 }
 function expGIT(){
@@ -195,6 +214,24 @@ esac
 # Caso o retorno seja 0, avisará do sucesso ao apagar
 # Caso seja 1, avisará da impossibilidade ao apagar
 # Caso seja um retorno desconhecido, mostrará o erro ocorrido e voltará ao menu assim como os outros retornos
+}
+function exect(){
+apk=$( dialog				\
+	--stdout			\
+	--backtitle "ROKUKISHI PROJECT"	\
+	--ok-label Continuar		\
+	--cancel-label Voltar		\
+	--title "Executar aplicativo"	\
+	--inputbox "Nome:" 0 0 )
+case $? in
+	1|255) menu;;
+esac
+$apk
+case $? in
+	0) menu;;
+	1) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Aplicativo não encontrado" 0 0;;
+	*) dialog --backtitle "ROKUKISHI PROJECT" --ok-label Continuar --msgbox "Erro $?" 0 0;;
+esac
 }
 function lista(){
 apt list --installed | nl > /tmp/listapacotes.txt
